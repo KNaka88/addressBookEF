@@ -24,7 +24,9 @@ namespace databasePractice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options => options
-                .UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                .UseMySql(Configuration.GetConnectionString("DefaultConnection")));          
+
+            services.AddMvc();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,10 +37,7 @@ namespace databasePractice
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            app.UseMvc();
         }
     }
 }
