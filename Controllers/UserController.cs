@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using databasePractice.Data;
+using databasePractice.Dtos;
 using databasePractice.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +13,13 @@ namespace databasePractice.Controllers
     {
         private readonly DataContext _context;
         private readonly IUserRepository _repo;
+        private readonly IMapper _mapper;
 
-        public UserController(DataContext context, IUserRepository repo)
+        public UserController(DataContext context, IUserRepository repo, IMapper mapper)
         {
             _context = context;
             _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -32,6 +36,22 @@ namespace databasePractice.Controllers
             var user = await _repo.GetUser(id);
             
             return Ok(user);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserForUpdateDto userForUpdateDto)
+        {
+            var user = await _repo.GetUser(id);
+
+            if (user == null)
+                return NotFound("Could not find user");
+
+            _mapper.Map(userForUpdateDto, user);
+
+            if (await _repo.SaveAll())
+                return Ok();
+    
+            throw new AutoMapperConfigurationException($"Updating user {id} failed on save");
         }
 
         [HttpDelete("{id}")]
