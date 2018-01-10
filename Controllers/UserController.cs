@@ -10,16 +10,26 @@ namespace databasePractice.Controllers
     public class UserController: Controller
     {
         private readonly DataContext _context;
+        private readonly IUserRepository _repo;
 
-        public UserController(DataContext context)
+        public UserController(DataContext context, IUserRepository repo)
         {
             _context = context;
+            _repo = repo;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _repo.GetUsers();
+
+            return Ok(users);
         }
 
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _repo.GetUser(id);
             
             return Ok(user);
         }
