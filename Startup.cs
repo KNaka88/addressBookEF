@@ -26,6 +26,7 @@ namespace databasePractice
             services.AddDbContext<DataContext>(options => options
                 .UseMySql(Configuration.GetConnectionString("DefaultConnection")));          
 
+            services.AddCors();
             services.AddMvc();  
             services.AddScoped<IUserRepository, UserRepository>();
         }
@@ -37,6 +38,14 @@ namespace databasePractice
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+            });
 
             app.UseMvc();
         }
