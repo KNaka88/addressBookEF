@@ -33,5 +33,21 @@ namespace databasePractice.Controllers
             
             return Ok(user);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _repo.GetUser(id);
+
+            if (user == null)
+                return NotFound();
+            
+            _repo.Delete(user);
+
+            if (await _repo.SaveAll())
+                return Ok();
+            else
+                return BadRequest("Failed to delete user");
+        }
     }
 }
