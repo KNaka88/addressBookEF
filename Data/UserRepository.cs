@@ -37,7 +37,7 @@ namespace databasePractice.Data
             return users;
         }
 
-        public async Task<bool> IsSaved()
+        public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
         }

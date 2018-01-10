@@ -10,6 +10,6 @@ namespace databasePractice.Data
         void Delete<T>(T entity) where T: class;
         Task<User> GetUser(int id);
         Task<IEnumerable<User>> GetUsers();
-        Task<bool> IsSaved();
+        Task<bool> SaveAll();
     }
 }
