@@ -8,5 +8,7 @@ namespace databasePractice.Data
         Task<User> Register(User user, string password);
 
         Task<bool> IsUserExist(string email);
+
+        Task<User> Login(string email, string password);
     }
 }

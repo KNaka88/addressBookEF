@@ -44,6 +44,19 @@ namespace databasePractice.Controllers
             var userToReturn = _mapper.Map<UserForDetailDto>(createdUser);
 
             return CreatedAtRoute("GetUser", new {controller = "Users", id = createdUser.Id}, userToReturn);
-        }        
+        }  
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
+        {
+            var user = await _repo.Login(userForLoginDto.Email, userForLoginDto.Password);
+
+            if (user == null)
+                return Unauthorized();
+            
+            //TODO ADD JWTtoken
+
+            return Ok();
+        }      
     }
 }
