@@ -30,6 +30,7 @@ namespace databasePractice
             services.AddCors();
             services.AddMvc();  
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddAutoMapper();
         }
 

@@ -9,6 +9,7 @@ namespace databasePractice.Helper
         public AutoMapperProfiles()
         {
             CreateMap<UserForUpdateDto, User>();
+            CreateMap<UserForRegisterDto, User>();
         }
     }
 }
