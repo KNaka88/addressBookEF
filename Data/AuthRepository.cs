@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using databasePractice.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace databasePractice.Data
 {
@@ -26,6 +27,18 @@ namespace databasePractice.Data
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+        public async Task<bool> IsUserExist(string email)
+        {
+            if (await _context.Users.AnyAsync(x => x.Email == email))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

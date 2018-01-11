@@ -6,5 +6,7 @@ namespace databasePractice.Data
     public interface IAuthRepository
     {
         Task<User> Register(User user, string password);
+
+        Task<bool> IsUserExist(string email);
     }
 }

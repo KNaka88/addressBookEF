@@ -31,10 +31,12 @@ namespace databasePractice.Controllers
             if (!string.IsNullOrEmpty(userForRegisterDto.Email))
                 userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
             
+            if (await _repo.IsUserExist(userForRegisterDto.Email))
+                ModelState.AddModelError("Email", "Email is already used in another account");
+            
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Console.WriteLine(userForRegisterDto);
             var userToCreate = _mapper.Map<User>(userForRegisterDto);
             
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
