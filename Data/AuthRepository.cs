@@ -1,17 +1,24 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using databasePractice.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace databasePractice.Data
 {
     public class AuthRepository: IAuthRepository
     {
         private readonly DataContext _context;
+        private readonly IConfiguration _config;
 
-        public AuthRepository(DataContext context)
+        public AuthRepository(DataContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         public async Task<User> Register(User user, string password)
@@ -77,6 +84,29 @@ namespace databasePractice.Data
                 }
                 return true;
             }
+        }
+
+        public string GetTokenString(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            //pick up key that stored in appsettings.json
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), 
+                    SecurityAlgorithms.HmacSha512Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            
+            return tokenString;
         }
     }
 }

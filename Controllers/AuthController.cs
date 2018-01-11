@@ -49,14 +49,15 @@ namespace databasePractice.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
         {
-            var user = await _repo.Login(userForLoginDto.Email, userForLoginDto.Password);
+            var userFromRepo = await _repo.Login(userForLoginDto.Email, userForLoginDto.Password);
 
-            if (user == null)
+            if (userFromRepo == null)
                 return Unauthorized();
-            
-            //TODO ADD JWTtoken
+        
+            var tokenString = _repo.GetTokenString(userFromRepo);
+            var user = _mapper.Map<UserForDetailDto>(userFromRepo);
 
-            return Ok();
+            return Ok( new {tokenString, user});
         }      
     }
 }

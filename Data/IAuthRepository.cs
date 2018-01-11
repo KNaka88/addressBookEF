@@ -10,5 +10,7 @@ namespace databasePractice.Data
         Task<bool> IsUserExist(string email);
 
         Task<User> Login(string email, string password);
+
+        string GetTokenString(User user);
     }
 }
