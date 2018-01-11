@@ -40,8 +40,10 @@ namespace databasePractice.Controllers
             var userToCreate = _mapper.Map<User>(userForRegisterDto);
             
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+            
+            var userToReturn = _mapper.Map<UserForDetailDto>(createdUser);
 
-            return CreatedAtRoute("GetUser", new {controller = "Users", id = createdUser.Id}, createdUser);
+            return CreatedAtRoute("GetUser", new {controller = "Users", id = createdUser.Id}, userToReturn);
         }        
     }
 }

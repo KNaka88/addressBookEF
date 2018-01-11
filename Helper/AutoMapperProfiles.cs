@@ -10,6 +10,8 @@ namespace databasePractice.Helper
         {
             CreateMap<UserForUpdateDto, User>();
             CreateMap<UserForRegisterDto, User>();
+            CreateMap<User, UserForDetailDto>();
+                
         }
     }
 }
