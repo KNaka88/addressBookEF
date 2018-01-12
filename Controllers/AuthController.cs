@@ -4,12 +4,13 @@ using AutoMapper;
 using databasePractice.Data;
 using databasePractice.Dtos;
 using databasePractice.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace databasePractice.Controllers
 {
-
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class AuthController: Controller
     {

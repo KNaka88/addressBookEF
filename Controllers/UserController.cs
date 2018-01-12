@@ -3,11 +3,13 @@ using AutoMapper;
 using databasePractice.Data;
 using databasePractice.Dtos;
 using databasePractice.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace databasePractice.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController: Controller
     {
